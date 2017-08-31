@@ -10,12 +10,18 @@ namespace Correlation;
 interface ICorrelation
 {
     /**
+     * @param array $fVector
+     * @param array $sVector
+     *
      * @return float
      */
-    public static function rank();
+    public static function rank(array $fVector, array $sVector);
 
     /**
+     * @param array $fVector
+     * @param array $sVector
+     *
      * @return float
      */
-    public static function determination();
+    public static function determination(array $fVector, array $sVector);
 }
