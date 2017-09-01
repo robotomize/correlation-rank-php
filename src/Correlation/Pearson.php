@@ -9,11 +9,23 @@ namespace Correlation;
  */
 class Pearson implements ICorrelation
 {
+    /**
+     * @param array $fVector
+     * @param array $sVector
+     *
+     * @return float|int
+     */
     public static function determination(array $fVector, array $sVector)
     {
         return static::rank($fVector, $sVector) ** 2;
     }
 
+    /**
+     * @param array $fVector
+     * @param array $sVector
+     *
+     * @return float|int
+     */
     public static function rank (array $fVector, array $sVector)
     {
         if (\count($fVector) === 0 || \count($sVector) === 0) {
@@ -23,6 +35,19 @@ class Pearson implements ICorrelation
         if (\count($fVector) !== \count($sVector)) {
             return 0;
         }
+
+        $numeratorSum = \array_sum(self::multiplyVector(
+            self::differenceAverage($fVector, self::averageValue($fVector)),
+            self::differenceAverage($sVector, self::averageValue($sVector))));
+        $differenceSquareSumFirstVector = \array_sum(self::differenceAverageSquare($fVector, self::averageValue($fVector)));
+        $differenceSquareSumSecondVector = \array_sum(self::differenceAverageSquare($fVector, self::averageValue($fVector)));
+        $denominatorSum = \sqrt($differenceSquareSumFirstVector * $differenceSquareSumSecondVector);
+
+        if ($denominatorSum === 0) {
+            return 0;
+        }
+
+        return $numeratorSum / $denominatorSum;
     }
 
     /**
